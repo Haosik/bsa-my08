@@ -3,15 +3,23 @@ function game() {
 
     let gameEnd: boolean = false;
 
+    interface IFighter {
+        name: string;
+        power: number;
+        health: number;
+        setDamage: (damage: number) => void;
+        hit: (enemy: Fighter, point: number) => void;
+    }
+
     // Создаём класс, которому передаём параметры:
     // string name, number power, number health
-    class Fighter {
+    class Fighter implements IFighter {
         name: string;
         power: number;
         health: number;
         // power по умолчанию: рандом от 1 до 10
         constructor(name: string = "Fighter-XX", power: number = Math.floor((Math.random() * 10) + 1), health: number = 1000) {
-            this.name = 'name',
+            this.name = name,
             this.power = power,
             this.health = health
         }
@@ -21,7 +29,7 @@ function game() {
             console.log(`${this.name}'s health: ${this.health}`);
         }
         // Эта сущность наносит урон по enemy
-        hit(enemy, point: number = 5) {
+        hit(enemy: Fighter, point: number = 5) {
             let damage : number = (point * this.power)
             // Проверяем, не закончена ли игра, и тогда бьём по врагу
             if (!gameEnd) {
@@ -35,10 +43,13 @@ function game() {
         }
     };
 
+
+    interface IImprovedFighter extends IFighter{
+        doubleHit: (enemy: Fighter, point: number) => void;
+    }
     // Создаём класс, который наследует Fighter (health и power - по умолчанию)
-    class ImprovedFighter extends Fighter {
-        // TODO Добавить шанс двойного удара при fight
-        doubleHit(enemy, point = 5) {
+    class ImprovedFighter extends Fighter implements IImprovedFighter {
+        doubleHit(enemy: Fighter, point = 5) {
             super.hit(enemy, point * 2)
         }
     }
@@ -55,11 +66,11 @@ function game() {
     console.table({fighter2});
     console.log(`%c LET THE FIGHT BEGIN!!!`, 'color: #fb1;font-weight: bold');
 
-    let fight = (fighter, improvedFighter, ...point) => {
+    let fight = (fighter: Fighter, improvedFighter: ImprovedFighter, ...point: number[]) => {
         // Счётчик текущего раунда
-        let round = 1;
-        let hitsCount = point.length;
-        let dmg = 0;
+        let round: number = 1;
+        let hitsCount: number = point.length;
+        let dmg: number = 0;
         do { 
             console.log(`█ Round ${round} █`)
             // Выбираем рандомную цифру урона из переданных, при инициализации битвы
@@ -82,8 +93,8 @@ game();
 
 
 //Misc
-let startBtn = document.getElementById('start-btn');
-startBtn.addEventListener('click', function(e){
+let startBtn = document.getElementById('start-btn') as HTMLButtonElement;
+startBtn.addEventListener('click', function(e) {
     e.preventDefault();
     console.clear();
     game();

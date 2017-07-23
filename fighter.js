@@ -19,7 +19,7 @@ function game() {
             if (name === void 0) { name = "Fighter-XX"; }
             if (power === void 0) { power = Math.floor((Math.random() * 10) + 1); }
             if (health === void 0) { health = 1000; }
-            this.name = 'name',
+            this.name = name,
                 this.power = power,
                 this.health = health;
         }
@@ -51,7 +51,6 @@ function game() {
         function ImprovedFighter() {
             return _super !== null && _super.apply(this, arguments) || this;
         }
-        // TODO Добавить шанс двойного удара при fight
         ImprovedFighter.prototype.doubleHit = function (enemy, point) {
             if (point === void 0) { point = 5; }
             _super.prototype.hit.call(this, enemy, point * 2);
