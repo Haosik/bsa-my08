@@ -1,5 +1,5 @@
 //Изолируем игру
-function game() {
+export default function game() {
 
     let gameEnd: boolean = false;
 
